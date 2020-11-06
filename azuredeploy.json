@@ -7,7 +7,7 @@
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
             },
-            "defaultValue": "https://raw.githubusercontent.com/Azure/Moodle/master/"
+            "defaultValue": "https://raw.githubusercontent.com/ernani/Moodle2/main/"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
@@ -80,7 +80,7 @@
             "type": "bool"
         },
         "enableAccelNwForCtlrVmSwitch": {
-            "defaultValue": false,
+            "defaultValue": true,
             "metadata": {
                 "description": "Switch to enable Azure Accelerated Networking on the controller VM. Default to false because currently the default controller VM SKU (D1) doesn't support AN. Change this to true if you set the controller VM SKU to eligibible ones (e.g., D2) for better performance."
             },
@@ -99,7 +99,7 @@
                 "AppGw",
                 "None"
             ],
-            "defaultValue": "VMSS",
+            "defaultValue": "None",
             "metadata": {
                 "description": "Indicates where https termination occurs. 'VMSS' is for https termination at the VMSS instance VMs (using nginx https proxy). 'AppGw' is for https termination with an Azure Application Gateway. When selecting this, you need to specify all appGw* parameters. 'None' is for testing only with no https. 'None' may not be used with a separately configured https termination layer. If you want to use the 'None' option with your separately configured https termination layer, you'll need to update your Moodle config.php manually for $cfg->wwwroot and $cfg->sslproxy."
             },
@@ -117,7 +117,7 @@
                 "MOODLE_39_STABLE",
                 "MOODLE_38_STABLE"
             ],
-            "defaultValue": "MOODLE_38_STABLE",
+            "defaultValue": "MOODLE_39_STABLE",
             "metadata": {
                 "description": "The Moodle version you want to install."
             },
@@ -137,7 +137,7 @@
             "type": "string"
         },
         "controllerVmSku": {
-            "defaultValue": "Standard_DS1_v2",
+            "defaultValue": "Standard_D2s_v4",
             "metadata": {
                 "description": "VM size for the controller VM"
             },
@@ -155,14 +155,14 @@
             "type": "string"
         },
         "autoscaleVmSku": {
-            "defaultValue": "Standard_DS2_v2",
+            "defaultValue": "Standard_D4s_v2",
             "metadata": {
                 "description": "VM size for autoscaled web VMs"
             },
             "type": "string"
         },
         "autoscaleVmCountMax": {
-            "defaultValue": 10,
+            "defaultValue": 6,
             "metadata": {
                 "description": "Maximum number of autoscaled web VMs"
             },
@@ -226,7 +226,7 @@
                 16,
                 32
             ],
-            "defaultValue": 2,
+            "defaultValue": 8,
             "metadata": {
                 "description": "MySql/Postgresql vCores. For Basic tier, only 1 & 2 are allowed. For GeneralPurpose tier, 2, 4, 8, 16, 32 are allowed. For MemoryOptimized, 2, 4, 8, 16 are allowed."
             },
@@ -267,9 +267,10 @@
         "mysqlVersion": {
             "allowedValues": [
                 "5.6",
-                "5.7"
+                "5.7",
+                "8.0"
             ],
-            "defaultValue": "5.7",
+            "defaultValue": "8.0",
             "metadata": {
                 "description": "Mysql version"
             },
@@ -363,7 +364,7 @@
             "type": "string"
         },
         "fileServerType": {
-            "defaultValue": "nfs",
+            "defaultValue": "azurefiles",
             "allowedValues": [
                 "gluster",
                 "nfs",
@@ -494,7 +495,7 @@
             "type": "int"
         },
         "storageAccountType": {
-            "defaultValue": "Standard_LRS",
+            "defaultValue": "Premium_LRS",
             "allowedValues": [
                 "Standard_LRS",
                 "Standard_GRS",
@@ -544,7 +545,7 @@
             "type": "string"
         },
         "azureSearchReplicaCount": {
-            "defaultValue": 3,
+            "defaultValue": 2,
             "minValue": 1,
             "maxValue": 12,
             "metadata": {
@@ -645,7 +646,7 @@
                 "16.04-LTS",
                 "18.04-LTS"
             ],
-            "defaultValue": "18.04-LTS"
+            "defaultValue": "16.04-LTS"
         },
         "location": {
             "type": "string",
