@@ -178,7 +178,7 @@
                 "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('moodleCommon').vmssName)]"
             ],
             "location": "[parameters('moodleCommon').location]",
-            "name": "autoscalewad",
+            "name": "[concat('autoscalewad-', parameters('moodleCommon').vmssName)]",
             "properties": {
                 "enabled": true,
                 "name": "autoscalewad",
