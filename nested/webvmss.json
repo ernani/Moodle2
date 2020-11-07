@@ -181,7 +181,7 @@
             "name": "[concat('autoscalewad-', parameters('moodleCommon').vmssName)]",
             "properties": {
                 "enabled": true,
-                "name": "autoscalewad",
+                "name": "[concat('autoscalewad-', parameters('moodleCommon').vmssName)]",
                 "profiles": [
                     {
                         "capacity": {
