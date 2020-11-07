@@ -137,7 +137,7 @@
             "type": "string"
         },
         "controllerVmSku": {
-            "defaultValue": "Standard_D4s_v4",
+            "defaultValue": "Standard_D4s_v3",
             "metadata": {
                 "description": "VM size for the controller VM"
             },
@@ -155,7 +155,7 @@
             "type": "string"
         },
         "autoscaleVmSku": {
-            "defaultValue": "Standard_D4s_v4",
+            "defaultValue": "Standard_D4s_v3",
             "metadata": {
                 "description": "VM size for autoscaled web VMs"
             },
