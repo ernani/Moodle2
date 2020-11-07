@@ -158,7 +158,7 @@
                             "managedDisk": {
                                 "storageAccountType": "[parameters('moodleCommon').osDiskStorageType]"
                             },
-                            "diskSizeGB": 40
+                            "diskSizeGB": 64
                         }
                     }
                 }
