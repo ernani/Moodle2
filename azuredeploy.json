@@ -401,7 +401,7 @@
             "type": "int"
         },
         "fileServerVmSku": {
-            "defaultValue": "Standard_D2s_v3",
+            "defaultValue": "Standard_DS2_v2",
             "metadata": {
                 "description": "VM size for the gluster or NFS-HA nodes"
             },
@@ -630,7 +630,7 @@
             "type": "string"
         },
         "loadBalancerSku": {
-            "defaultValue": "Basic",
+            "defaultValue": "Standard",
             "allowedValues": [
                 "Basic",
                 "Standard"
