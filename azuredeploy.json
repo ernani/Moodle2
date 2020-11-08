@@ -137,7 +137,7 @@
             "type": "string"
         },
         "controllerVmSku": {
-            "defaultValue": "Standard_D4s_v3",
+            "defaultValue": "Standard_DS2_v2",
             "metadata": {
                 "description": "VM size for the controller VM"
             },
@@ -364,7 +364,7 @@
             "type": "string"
         },
         "fileServerType": {
-            "defaultValue": "gluster",
+            "defaultValue": "nfs-ha",
             "allowedValues": [
                 "gluster",
                 "nfs",
@@ -392,7 +392,7 @@
             "type": "int"
         },
         "fileServerDiskCount": {
-            "defaultValue": 4,
+            "defaultValue": 2,
             "minValue": 2,
             "maxValue": 8,
             "metadata": {
