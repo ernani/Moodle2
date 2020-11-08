@@ -13,7 +13,7 @@ function get_setup_params_from_configs_json
 
     # Added curl command to download jq.
     curl https://stedolan.github.io/jq/download/linux64/jq > /usr/bin/jq && chmod +x /usr/bin/jq
-	
+
     # Wait for the cloud-init write-files user data file to be generated (just in case)
     local wait_time_sec=0
     while [ ! -f "$configs_json_path" ]; do
@@ -123,8 +123,7 @@ function create_azure_files_moodle_share
         --name moodle \
         --account-name $storageAccountName \
         --account-key $storageAccountKey \
-        --fail-on-exist >>$logFilePath \
-        --quota $fileServerDiskSize
+        --fail-on-exist >> $logFilePath
 }
 
 function setup_and_mount_gluster_moodle_share
@@ -146,7 +145,7 @@ username=$storageAccountName
 password=$storageAccountKey
 EOF
     chmod 600 /etc/moodle_azure_files.credential
-    
+
     grep -q -s "^//$storageAccountName.file.core.windows.net/moodle\s\s*/moodle\s\s*cifs" /etc/fstab && _RET=$? || _RET=$?
     if [ $_RET != "0" ]; then
         echo -e "\n//$storageAccountName.file.core.windows.net/moodle   /moodle cifs    credentials=/etc/moodle_azure_files.credential,uid=www-data,gid=www-data,nofail,vers=3.0,dir_mode=0770,file_mode=0660,serverino,mfsymlinks" >> /etc/fstab
@@ -206,7 +205,7 @@ function create_raid0_ubuntu {
 
     dpkg -s mdadm && _RET=$? || _RET=$?
     if [ $_RET -eq 1 ];
-    then 
+    then
         echo "installing mdadm"
         sudo apt-get -y -q install mdadm
     fi
@@ -223,7 +222,7 @@ function do_partition {
     local DISK=${1}   # E.g., /dev/sdc
 
     echo "Partitioning disk $DISK"
-    echo -ne "n\np\n1\n\n\nw\n" | fdisk "${DISK}" 
+    echo -ne "n\np\n1\n\n\nw\n" | fdisk "${DISK}"
     #> /dev/null 2>&1
 
     #
@@ -260,7 +259,7 @@ function setup_raid_disk_and_filesystem {
     local DISKS=$(scan_for_new_disks "/dev/sda|/dev/sdb")
     echo "Disks are ${DISKS}"
     declare -i DISKCOUNT
-    local DISKCOUNT=$(echo "$DISKS" | wc -w) 
+    local DISKCOUNT=$(echo "$DISKS" | wc -w)
     echo "Disk count is $DISKCOUNT"
     if [ $DISKCOUNT = "0" ]; then
         echo "No new (unpartitioned) disks available... Returning non-zero..."
@@ -451,13 +450,13 @@ function create_redis_configuration_in_moodledata_muc_config_php
 <?php defined('MOODLE_INTERNAL') || die();
  \$configuration = array (
   'siteidentifier' => '7a142be09ea65699e4a6f6ef91c0773c',
-  'stores' => 
+  'stores' =>
   array (
-    'default_application' => 
+    'default_application' =>
     array (
       'name' => 'default_application',
       'plugin' => 'file',
-      'configuration' => 
+      'configuration' =>
       array (
       ),
       'features' => 30,
@@ -466,11 +465,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'class' => 'cachestore_file',
       'lock' => 'cachelock_file_default',
     ),
-    'default_session' => 
+    'default_session' =>
     array (
       'name' => 'default_session',
       'plugin' => 'session',
-      'configuration' => 
+      'configuration' =>
       array (
       ),
       'features' => 14,
@@ -479,11 +478,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'class' => 'cachestore_session',
       'lock' => 'cachelock_file_default',
     ),
-    'default_request' => 
+    'default_request' =>
     array (
       'name' => 'default_request',
       'plugin' => 'static',
-      'configuration' => 
+      'configuration' =>
       array (
       ),
       'features' => 31,
@@ -492,11 +491,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'class' => 'cachestore_static',
       'lock' => 'cachelock_file_default',
     ),
-    'redis' => 
+    'redis' =>
     array (
       'name' => 'redis',
       'plugin' => 'redis',
-      'configuration' => 
+      'configuration' =>
       array (
         'server' => '$redisDns',
         'prefix' => 'moodle_prod',
@@ -510,11 +509,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'default' => false,
       'lock' => 'cachelock_file_default',
     ),
-    'local_file' => 
+    'local_file' =>
     array (
       'name' => 'local_file',
       'plugin' => 'file',
-      'configuration' => 
+      'configuration' =>
       array (
         'path' => '/tmp/muc/moodle_prod',
         'autocreate' => 1,
@@ -527,30 +526,30 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'lock' => 'cachelock_file_default',
     ),
   ),
-  'modemappings' => 
+  'modemappings' =>
   array (
-    0 => 
+    0 =>
     array (
       'store' => 'redis',
       'mode' => 1,
       'sort' => 0,
     ),
-    1 => 
+    1 =>
     array (
       'store' => 'default_session',
       'mode' => 2,
       'sort' => 0,
     ),
-    2 => 
+    2 =>
     array (
       'store' => 'default_request',
       'mode' => 4,
       'sort' => 0,
     ),
   ),
-  'definitions' => 
+  'definitions' =>
   array (
-    'core/string' => 
+    'core/string' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -564,7 +563,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/langmenu' => 
+    'core/langmenu' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -577,10 +576,10 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/databasemeta' => 
+    'core/databasemeta' =>
     array (
       'mode' => 1,
-      'requireidentifiers' => 
+      'requireidentifiers' =>
       array (
         0 => 'dbfamily',
       ),
@@ -593,7 +592,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/eventinvalidation' => 
+    'core/eventinvalidation' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
@@ -605,7 +604,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/questiondata' => 
+    'core/questiondata' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -618,7 +617,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/htmlpurifier' => 
+    'core/htmlpurifier' =>
     array (
       'mode' => 1,
       'canuselocalstore' => true,
@@ -628,7 +627,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/config' => 
+    'core/config' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
@@ -639,7 +638,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/groupdata' => 
+    'core/groupdata' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -652,7 +651,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/calendar_subscriptions' => 
+    'core/calendar_subscriptions' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -664,7 +663,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/capabilities' => 
+    'core/capabilities' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -678,7 +677,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/yuimodules' => 
+    'core/yuimodules' =>
     array (
       'mode' => 1,
       'component' => 'core',
@@ -687,7 +686,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/observers' => 
+    'core/observers' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -700,7 +699,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/plugin_manager' => 
+    'core/plugin_manager' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -711,11 +710,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/coursecattree' => 
+    'core/coursecattree' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
-      'invalidationevents' => 
+      'invalidationevents' =>
       array (
         0 => 'changesincoursecat',
       ),
@@ -725,10 +724,10 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/coursecat' => 
+    'core/coursecat' =>
     array (
       'mode' => 2,
-      'invalidationevents' => 
+      'invalidationevents' =>
       array (
         0 => 'changesincoursecat',
         1 => 'changesincourse',
@@ -740,11 +739,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/coursecatrecords' => 
+    'core/coursecatrecords' =>
     array (
       'mode' => 4,
       'simplekeys' => true,
-      'invalidationevents' => 
+      'invalidationevents' =>
       array (
         0 => 'changesincoursecat',
       ),
@@ -754,7 +753,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/coursecontacts' => 
+    'core/coursecontacts' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
@@ -766,7 +765,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/repositories' => 
+    'core/repositories' =>
     array (
       'mode' => 4,
       'component' => 'core',
@@ -775,7 +774,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/externalbadges' => 
+    'core/externalbadges' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -786,7 +785,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/coursemodinfo' => 
+    'core/coursemodinfo' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -797,7 +796,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/userselections' => 
+    'core/userselections' =>
     array (
       'mode' => 2,
       'simplekeys' => true,
@@ -808,7 +807,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/completion' => 
+    'core/completion' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -822,7 +821,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/coursecompletion' => 
+    'core/coursecompletion' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -836,7 +835,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/navigation_expandcourse' => 
+    'core/navigation_expandcourse' =>
     array (
       'mode' => 2,
       'simplekeys' => true,
@@ -847,7 +846,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/suspended_userids' => 
+    'core/suspended_userids' =>
     array (
       'mode' => 4,
       'simplekeys' => true,
@@ -858,7 +857,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/roledefs' => 
+    'core/roledefs' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -871,7 +870,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/plugin_functions' => 
+    'core/plugin_functions' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -884,7 +883,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/tags' => 
+    'core/tags' =>
     array (
       'mode' => 4,
       'simplekeys' => true,
@@ -895,11 +894,11 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/grade_categories' => 
+    'core/grade_categories' =>
     array (
       'mode' => 2,
       'simplekeys' => true,
-      'invalidationevents' => 
+      'invalidationevents' =>
       array (
         0 => 'changesingradecategories',
       ),
@@ -909,7 +908,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/temp_tables' => 
+    'core/temp_tables' =>
     array (
       'mode' => 4,
       'simplekeys' => true,
@@ -920,7 +919,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/tagindexbuilder' => 
+    'core/tagindexbuilder' =>
     array (
       'mode' => 2,
       'simplekeys' => true,
@@ -928,7 +927,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'staticacceleration' => true,
       'staticaccelerationsize' => 10,
       'ttl' => 900,
-      'invalidationevents' => 
+      'invalidationevents' =>
       array (
         0 => 'resettagindexbuilder',
       ),
@@ -938,7 +937,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'core/contextwithinsights' => 
+    'core/contextwithinsights' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -951,7 +950,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/message_processors_enabled' => 
+    'core/message_processors_enabled' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -964,7 +963,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/message_time_last_message_between_users' => 
+    'core/message_time_last_message_between_users' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -976,7 +975,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/fontawesomeiconmapping' => 
+    'core/fontawesomeiconmapping' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -989,7 +988,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/postprocessedcss' => 
+    'core/postprocessedcss' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1001,7 +1000,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'core/user_group_groupings' => 
+    'core/user_group_groupings' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1013,7 +1012,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'availability_grade/scores' => 
+    'availability_grade/scores' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
@@ -1025,7 +1024,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'availability_grade/items' => 
+    'availability_grade/items' =>
     array (
       'mode' => 1,
       'staticacceleration' => true,
@@ -1037,7 +1036,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'mod_glossary/concepts' => 
+    'mod_glossary/concepts' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1050,7 +1049,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'repository_googledocs/folder' => 
+    'repository_googledocs/folder' =>
     array (
       'mode' => 1,
       'simplekeys' => false,
@@ -1064,7 +1063,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'repository_onedrive/folder' => 
+    'repository_onedrive/folder' =>
     array (
       'mode' => 1,
       'simplekeys' => false,
@@ -1078,7 +1077,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'repository_skydrive/foldername' => 
+    'repository_skydrive/foldername' =>
     array (
       'mode' => 2,
       'component' => 'repository_skydrive',
@@ -1087,7 +1086,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'tool_mobile/plugininfo' => 
+    'tool_mobile/plugininfo' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1099,7 +1098,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'tool_monitor/eventsubscriptions' => 
+    'tool_monitor/eventsubscriptions' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1112,7 +1111,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'tool_uploadcourse/helper' => 
+    'tool_uploadcourse/helper' =>
     array (
       'mode' => 4,
       'component' => 'tool_uploadcourse',
@@ -1121,7 +1120,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 2,
     ),
-    'tool_usertours/tourdata' => 
+    'tool_usertours/tourdata' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1134,7 +1133,7 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'userinputsharingkey' => '',
       'sharingoptions' => 15,
     ),
-    'tool_usertours/stepdata' => 
+    'tool_usertours/stepdata' =>
     array (
       'mode' => 1,
       'simplekeys' => true,
@@ -1148,234 +1147,234 @@ function create_redis_configuration_in_moodledata_muc_config_php
       'sharingoptions' => 15,
     ),
   ),
-  'definitionmappings' => 
+  'definitionmappings' =>
   array (
-    0 => 
+    0 =>
     array (
       'store' => 'local_file',
       'definition' => 'core/coursemodinfo',
       'sort' => 1,
     ),
-    1 => 
+    1 =>
     array (
       'store' => 'redis',
       'definition' => 'core/groupdata',
       'sort' => 1,
     ),
-    2 => 
+    2 =>
     array (
       'store' => 'redis',
       'definition' => 'core/roledefs',
       'sort' => 1,
     ),
-    3 => 
+    3 =>
     array (
       'store' => 'redis',
       'definition' => 'tool_usertours/tourdata',
       'sort' => 1,
     ),
-    4 => 
+    4 =>
     array (
       'store' => 'redis',
       'definition' => 'repository_onedrive/folder',
       'sort' => 1,
     ),
-    5 => 
+    5 =>
     array (
       'store' => 'redis',
       'definition' => 'core/message_processors_enabled',
       'sort' => 1,
     ),
-    6 => 
+    6 =>
     array (
       'store' => 'redis',
       'definition' => 'core/coursecontacts',
       'sort' => 1,
     ),
-    7 => 
+    7 =>
     array (
       'store' => 'redis',
       'definition' => 'repository_googledocs/folder',
       'sort' => 1,
     ),
-    8 => 
+    8 =>
     array (
       'store' => 'redis',
       'definition' => 'core/questiondata',
       'sort' => 1,
     ),
-    9 => 
+    9 =>
     array (
       'store' => 'redis',
       'definition' => 'core/coursecat',
       'sort' => 1,
     ),
-    10 => 
+    10 =>
     array (
       'store' => 'redis',
       'definition' => 'core/databasemeta',
       'sort' => 1,
     ),
-    11 => 
+    11 =>
     array (
       'store' => 'redis',
       'definition' => 'core/eventinvalidation',
       'sort' => 1,
     ),
-    12 => 
+    12 =>
     array (
       'store' => 'redis',
       'definition' => 'core/coursecattree',
       'sort' => 1,
     ),
-    13 => 
+    13 =>
     array (
       'store' => 'redis',
       'definition' => 'core/coursecompletion',
       'sort' => 1,
     ),
-    14 => 
+    14 =>
     array (
       'store' => 'redis',
       'definition' => 'core/user_group_groupings',
       'sort' => 1,
     ),
-    15 => 
+    15 =>
     array (
       'store' => 'redis',
       'definition' => 'core/capabilities',
       'sort' => 1,
     ),
-    16 => 
+    16 =>
     array (
       'store' => 'redis',
       'definition' => 'core/yuimodules',
       'sort' => 1,
     ),
-    17 => 
+    17 =>
     array (
       'store' => 'redis',
       'definition' => 'core/observers',
       'sort' => 1,
     ),
-    18 => 
+    18 =>
     array (
       'store' => 'redis',
       'definition' => 'mod_glossary/concepts',
       'sort' => 1,
     ),
-    19 => 
+    19 =>
     array (
       'store' => 'redis',
       'definition' => 'core/fontawesomeiconmapping',
       'sort' => 1,
     ),
-    20 => 
+    20 =>
     array (
       'store' => 'redis',
       'definition' => 'core/config',
       'sort' => 1,
     ),
-    21 => 
+    21 =>
     array (
       'store' => 'redis',
       'definition' => 'tool_mobile/plugininfo',
       'sort' => 1,
     ),
-    22 => 
+    22 =>
     array (
       'store' => 'redis',
       'definition' => 'core/plugin_functions',
       'sort' => 1,
     ),
-    23 => 
+    23 =>
     array (
       'store' => 'redis',
       'definition' => 'core/postprocessedcss',
       'sort' => 1,
     ),
-    24 => 
+    24 =>
     array (
       'store' => 'redis',
       'definition' => 'core/plugin_manager',
       'sort' => 1,
     ),
-    25 => 
+    25 =>
     array (
       'store' => 'redis',
       'definition' => 'tool_usertours/stepdata',
       'sort' => 1,
     ),
-    26 => 
+    26 =>
     array (
       'store' => 'redis',
       'definition' => 'availability_grade/items',
       'sort' => 1,
     ),
-    27 => 
+    27 =>
     array (
       'store' => 'local_file',
       'definition' => 'core/string',
       'sort' => 1,
     ),
-    28 => 
+    28 =>
     array (
       'store' => 'redis',
       'definition' => 'core/externalbadges',
       'sort' => 1,
     ),
-    29 => 
+    29 =>
     array (
       'store' => 'local_file',
       'definition' => 'core/langmenu',
       'sort' => 1,
     ),
-    30 => 
+    30 =>
     array (
       'store' => 'local_file',
       'definition' => 'core/htmlpurifier',
       'sort' => 1,
     ),
-    31 => 
+    31 =>
     array (
       'store' => 'redis',
       'definition' => 'core/completion',
       'sort' => 1,
     ),
-    32 => 
+    32 =>
     array (
       'store' => 'redis',
       'definition' => 'core/calendar_subscriptions',
       'sort' => 1,
     ),
-    33 => 
+    33 =>
     array (
       'store' => 'redis',
       'definition' => 'core/contextwithinsights',
       'sort' => 1,
     ),
-    34 => 
+    34 =>
     array (
       'store' => 'redis',
       'definition' => 'tool_monitor/eventsubscriptions',
       'sort' => 1,
     ),
-    35 => 
+    35 =>
     array (
       'store' => 'redis',
       'definition' => 'core/message_time_last_message_between_users',
       'sort' => 1,
     ),
-    36 => 
+    36 =>
     array (
       'store' => 'redis',
       'definition' => 'availability_grade/scores',
       'sort' => 1,
     ),
   ),
-  'locks' => 
+  'locks' =>
   array (
-    'cachelock_file_default' => 
+    'cachelock_file_default' =>
     array (
       'name' => 'cachelock_file_default',
       'type' => 'cachelock_file',
