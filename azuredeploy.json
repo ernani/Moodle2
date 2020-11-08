@@ -45,7 +45,7 @@
             "type": "bool"
         },
         "installObjectFsSwitch": {
-            "defaultValue": false,
+            "defaultValue": true,
             "metadata": {
                 "description": "Switch to install Moodle Object FS plugins (with Azure Blob storage)"
             },
@@ -364,7 +364,7 @@
             "type": "string"
         },
         "fileServerType": {
-            "defaultValue": "azurefiles",
+            "defaultValue": "gluster",
             "allowedValues": [
                 "gluster",
                 "nfs",
@@ -385,7 +385,7 @@
             "type": "string"
         },
         "fileServerDiskSize": {
-            "defaultValue": 127,
+            "defaultValue": 64,
             "metadata": {
                 "description": "Size per disk for gluster nodes or nfs server"
             },
@@ -401,7 +401,7 @@
             "type": "int"
         },
         "fileServerVmSku": {
-            "defaultValue": "Standard_DS2_v2",
+            "defaultValue": "Standard_D2s_v3",
             "metadata": {
                 "description": "VM size for the gluster or NFS-HA nodes"
             },
